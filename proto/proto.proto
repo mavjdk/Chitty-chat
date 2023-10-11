@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package chittychat;
+
+message Message {
+  string id = 1;
+  string text = 2;
+  string author = 3;
+  repeated int32 vectorClock = 4;
+}
+
+service messageService {
+    rpc messageService(stream Message) returns (stream Message);
+}
