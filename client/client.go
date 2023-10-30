@@ -1,21 +1,20 @@
 package main
 
 import (
+	"bufio"
+	"chittychat/proto"
 	"context"
+	"fmt"
 	"io"
 	"log"
-	"sync"
-
-	"chittychat/proto"
+	"math/rand"
+	"os"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var waitgroup sync.WaitGroup
-
 func main() {
-
 	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
@@ -30,18 +29,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error when calling MessageRoute: %s", err)
 	}
-	waitgroup.Add(1)
 	go listener(stream)
-	msg := &proto.Message{
-		Text:   "Hello from the client!",
-		Author: "Client",
+	scanner := bufio.NewScanner(os.Stdin)
+	clientID := rand.Int() % 1000
+	for {
+		scanner.Scan()
+		input := scanner.Text()
+		if err != nil {
+			log.Fatalf("Failed to scan input: %v", err)
+		}
+		msg := &proto.Message{
+			Text:   input,
+			Author: fmt.Sprintf("Client %d", clientID),
+		}
+		if err := stream.Send(msg); err != nil {
+			log.Fatalf("Failed to send a msg: %v", err)
+		}
 	}
-	if err := stream.Send(msg); err != nil {
-		log.Fatalf("Failed to send a msg: %v", err)
-	}
-
-	waitgroup.Wait()
-
 }
 
 func listener(stream proto.MessageService_MessageRouteClient) {
@@ -50,7 +54,6 @@ func listener(stream proto.MessageService_MessageRouteClient) {
 		if err == io.EOF {
 			// read done.
 			log.Printf("EOF")
-			waitgroup.Done()
 			return
 		}
 		if err != nil {

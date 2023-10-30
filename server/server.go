@@ -9,8 +9,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-func main() {
+var clients map[int]proto.MessageService_MessageRouteServer
+var idCounter int
 
+func main() {
+	clients = make(map[int]proto.MessageService_MessageRouteServer)
 	println("Starting Serer")
 	grpcServer := grpc.NewServer()
 	proto.RegisterMessageServiceServer(grpcServer, &MessageServiceServer{})
@@ -23,7 +26,6 @@ func main() {
 	if err := grpcServer.Serve(listener); err != nil {
 		panic(err)
 	}
-
 }
 
 type MessageServiceServer struct {
@@ -31,6 +33,12 @@ type MessageServiceServer struct {
 }
 
 func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageRouteServer) error {
+	log.Printf(("New client connected"))
+	connID := idCounter
+	idCounter++
+	clients[connID] = stream
+	defer delete(clients, connID)
+
 	for {
 		in, err := stream.Recv()
 		if err == io.EOF {
@@ -40,10 +48,13 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 			return err
 		}
 		log.Printf("Got message %s, author: %s ", in.Text, in.Author)
-		stream.Send(&proto.Message{
-			Text:   "Hello from the server!",
-			Author: "Server",
-		})
-
+		for id, client := range clients {
+			if id == connID {
+				continue
+			}
+			if err := client.Send(in); err != nil {
+				return err
+			}
+		}
 	}
 }
