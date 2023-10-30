@@ -49,14 +49,13 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 	for {
 		//receive message from client
 		in, err := stream.Recv()
-		updateVectorClockFromClient(in.VectorClock, in.Id)
-
 		if err == io.EOF {
 			return nil
 		}
 		if err != nil {
 			return err
 		}
+		updateVectorClockFromClient(in.VectorClock, in.Id)
 		log.Printf("Got message %s, author: %s ", in.Text, in.Author)
 		for id, client := range clients {
 			//skips sending to the client that sent the message
