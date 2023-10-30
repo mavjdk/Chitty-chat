@@ -16,7 +16,8 @@ var vectorClock []int32
 
 func main() {
 	//init vector clock with server position as 0
-	vectorClock = make([]int32, 10)
+	vectorClock = []int32{0}
+
 	//print the vector clock
 	log.Printf("VectorClock: %v", vectorClock)
 
@@ -24,7 +25,6 @@ func main() {
 	println("Starting Serer")
 	grpcServer := grpc.NewServer()
 	proto.RegisterMessageServiceServer(grpcServer, &MessageServiceServer{})
-	proto.RegisterVectorClockServiceServer(grpcServer, &MessageServiceServer{})
 	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		panic(err)
@@ -37,7 +37,6 @@ func main() {
 
 type MessageServiceServer struct {
 	proto.UnimplementedMessageServiceServer
-	proto.UnimplementedVectorClockServiceServer
 }
 
 func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageRouteServer) error {
@@ -71,11 +70,11 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 	}
 }
 
-func (s *MessageServiceServer) VectorClockService(ctx context.Context, in *proto.Empty) (*proto.VectorClock, error) {
+func (s *MessageServiceServer) VectorClockAddClient(ctx context.Context, in *proto.Empty) (*proto.VectorClock, error) {
+	vectorClock = append(vectorClock, 0)
+
 	updateLocalVectorClock()
 	var id = updateAndGetId()
-	vectorClock[id] = 0
-
 	return &proto.VectorClock{
 		Id:          id,
 		VectorClock: vectorClock,
@@ -94,7 +93,6 @@ func updateVectorClockFromClient(clock []int32, id int32) {
 	//print the id of the client that sent the vector clock
 
 	updateLocalVectorClock()
-	vectorClock[0]++
 	//because the server is the only one who speaks to clients
 	//we only need to update the space for the client in the vector clock
 	vectorClock[id] = clock[id]

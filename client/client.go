@@ -24,9 +24,9 @@ func main() {
 	log.Printf("Connection State: %s", conn.GetState().String())
 	defer conn.Close()
 
-	initialVectorClockAsk(proto.NewVectorClockServiceClient(conn))
-
 	ServiceConn := proto.NewMessageServiceClient(conn)
+
+	initialVectorClockAsk(ServiceConn)
 
 	stream, err := ServiceConn.MessageRoute(context.Background())
 	defer stream.CloseSend()
@@ -71,20 +71,26 @@ func listener(stream proto.MessageService_MessageRouteClient) {
 		log.Printf("VectorClock: %v", vectorClock)
 	}
 }
-func initialVectorClockAsk(client proto.VectorClockServiceClient) {
-	respone, err := client.VectorClockService(context.Background(), &proto.Empty{})
+func initialVectorClockAsk(client proto.MessageServiceClient) {
+	response, err := client.VectorClockAddClient(context.Background(), &proto.Empty{})
 	if err != nil {
 		log.Fatalf("Failed to get VectorClock: %v", err)
 	}
-	vectorClock = respone.VectorClock
-	id = respone.Id
+	vectorClock = response.VectorClock
+	println("Got vector clock: ", len(vectorClock))
+	id = response.Id
 
 }
 func updateLocalVectorClock() {
 	vectorClock[id]++
 }
 func updateVectorClock(incommingClock []int32, id int32) {
-	if vectorClock[id] < incommingClock[id] {
-		vectorClock[id] = incommingClock[id]
+	if len(vectorClock) < len(incommingClock) {
+		vectorClock = append(vectorClock, incommingClock[len(vectorClock):]...)
+	}
+	for i := 0; i < len(vectorClock); i++ {
+		if vectorClock[i] < incommingClock[i] {
+			vectorClock[i] = incommingClock[i]
+		}
 	}
 }

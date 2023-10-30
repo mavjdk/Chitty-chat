@@ -11,9 +11,6 @@ message Message {
   repeated int32 vectorClock = 4;
 }
 
-service messageService {
-    rpc MessageRoute(stream Message) returns (stream Message);
-}
 //used for initial connection ask for vector clock
 message empty {
 }
@@ -22,11 +19,8 @@ message vectorClock {
     int32 id = 1;
     repeated int32 vectorClock = 2;
 }
-service vectorClockService {
-    rpc vectorClockService(empty) returns (vectorClock);
+
+service messageService {
+    rpc MessageRoute(stream Message) returns (stream Message);
+    rpc VectorClockAddClient(empty) returns (vectorClock);
 }
-
-
-
-
-
