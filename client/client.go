@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not connect: %v", err)
 	}
-	log.Printf("Connection State: %s", conn.GetState().String())
+	log.Printf("Connecting to server, State: %s", conn.GetState().String())
 	defer conn.Close()
 
 	ServiceConn := proto.NewMessageServiceClient(conn)
