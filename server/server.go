@@ -3,6 +3,7 @@ package main
 import (
 	"chittychat/proto"
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -32,7 +33,6 @@ func main() {
 	log.Printf("Server: Starting VectorClock: %v", vectorClock)
 
 	clients = make(map[int32]proto.MessageService_MessageRouteServer)
-
 	grpcServer := grpc.NewServer()
 	proto.RegisterMessageServiceServer(grpcServer, &MessageServiceServer{})
 	listener, err := net.Listen("tcp", ":8080")
@@ -52,8 +52,7 @@ type MessageServiceServer struct {
 func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageRouteServer) error {
 	connID := idCounter
 	clients[connID] = stream
-	defer delete(clients, connID)
-
+	defer removeClient(connID)
 	for {
 		//receive message from client
 		in, err := stream.Recv()
@@ -92,6 +91,24 @@ func (s *MessageServiceServer) AddClient(ctx context.Context, in *proto.Empty) (
 		Id:          id,
 		VectorClock: vectorClock,
 	}, nil
+}
+
+func removeClient(leavingID int32) error {
+	log.Printf("Client %d leaves", leavingID)
+	delete(clients, leavingID)
+	for id, client := range clients {
+		updateLocalVectorClock()
+		msg := &proto.Message{
+			Text:        fmt.Sprintf("Client %d leaves at vector clock %v", leavingID, vectorClock),
+			VectorClock: vectorClock,
+			Author:      "Server",
+			Id:          id,
+		}
+		if err := client.Send(msg); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func updateAndGetId() int32 {
