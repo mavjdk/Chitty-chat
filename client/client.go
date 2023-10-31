@@ -58,7 +58,7 @@ func main() {
 			Id:          id,
 			Author:      fmt.Sprintf("Client %d", id),
 		}
-		
+
 		if err := stream.Send(msg); err != nil {
 			log.Fatalf("Failed to send a msg: %v", err)
 		}
@@ -105,5 +105,5 @@ func updateVectorClock(incommingClock []int32) {
 			vectorClock[i] = incommingClock[i]
 		}
 	}
-	log.Panicf("Clint %d: Update vectorclock based on message from server VectorClock: %v", id, vectorClock)
+	log.Printf("Clint %d: Update vectorclock based on message from server VectorClock: %v", id, vectorClock)
 }
