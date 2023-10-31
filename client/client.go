@@ -26,7 +26,7 @@ func main() {
 
 	ServiceConn := proto.NewMessageServiceClient(conn)
 
-	initialVectorClockAsk(ServiceConn)
+	initialAddClientCall(ServiceConn)
 
 	stream, err := ServiceConn.MessageRoute(context.Background())
 	defer stream.CloseSend()
@@ -71,13 +71,12 @@ func listener(stream proto.MessageService_MessageRouteClient) {
 		log.Printf("VectorClock: %v", vectorClock)
 	}
 }
-func initialVectorClockAsk(client proto.MessageServiceClient) {
-	response, err := client.VectorClockAddClient(context.Background(), &proto.Empty{})
+func initialAddClientCall(client proto.MessageServiceClient) {
+	response, err := client.AddClient(context.Background(), &proto.Empty{})
 	if err != nil {
-		log.Fatalf("Failed to get VectorClock: %v", err)
+		log.Fatalf("Failed to Add client to server: %v", err)
 	}
 	vectorClock = response.VectorClock
-	println("Got vector clock: ", len(vectorClock))
 	id = response.Id
 
 }

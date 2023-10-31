@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageServiceClient interface {
 	MessageRoute(ctx context.Context, opts ...grpc.CallOption) (MessageService_MessageRouteClient, error)
-	VectorClockAddClient(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*VectorClock, error)
+	AddClient(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AddClientResponse, error)
 }
 
 type messageServiceClient struct {
@@ -65,9 +65,9 @@ func (x *messageServiceMessageRouteClient) Recv() (*Message, error) {
 	return m, nil
 }
 
-func (c *messageServiceClient) VectorClockAddClient(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*VectorClock, error) {
-	out := new(VectorClock)
-	err := c.cc.Invoke(ctx, "/chittychat.messageService/VectorClockAddClient", in, out, opts...)
+func (c *messageServiceClient) AddClient(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AddClientResponse, error) {
+	out := new(AddClientResponse)
+	err := c.cc.Invoke(ctx, "/chittychat.messageService/AddClient", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (c *messageServiceClient) VectorClockAddClient(ctx context.Context, in *Emp
 // for forward compatibility
 type MessageServiceServer interface {
 	MessageRoute(MessageService_MessageRouteServer) error
-	VectorClockAddClient(context.Context, *Empty) (*VectorClock, error)
+	AddClient(context.Context, *Empty) (*AddClientResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -90,8 +90,8 @@ type UnimplementedMessageServiceServer struct {
 func (UnimplementedMessageServiceServer) MessageRoute(MessageService_MessageRouteServer) error {
 	return status.Errorf(codes.Unimplemented, "method MessageRoute not implemented")
 }
-func (UnimplementedMessageServiceServer) VectorClockAddClient(context.Context, *Empty) (*VectorClock, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VectorClockAddClient not implemented")
+func (UnimplementedMessageServiceServer) AddClient(context.Context, *Empty) (*AddClientResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddClient not implemented")
 }
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 
@@ -132,20 +132,20 @@ func (x *messageServiceMessageRouteServer) Recv() (*Message, error) {
 	return m, nil
 }
 
-func _MessageService_VectorClockAddClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MessageService_AddClient_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageServiceServer).VectorClockAddClient(ctx, in)
+		return srv.(MessageServiceServer).AddClient(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chittychat.messageService/VectorClockAddClient",
+		FullMethod: "/chittychat.messageService/AddClient",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageServiceServer).VectorClockAddClient(ctx, req.(*Empty))
+		return srv.(MessageServiceServer).AddClient(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -158,8 +158,8 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MessageServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "VectorClockAddClient",
-			Handler:    _MessageService_VectorClockAddClient_Handler,
+			MethodName: "AddClient",
+			Handler:    _MessageService_AddClient_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

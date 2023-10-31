@@ -12,15 +12,15 @@ message Message {
 }
 
 //used for initial connection ask for vector clock
-message empty {
+message Empty {
 }
 //id is the position in the vector clock
-message vectorClock {
+message AddClientResponse {
     int32 id = 1;
     repeated int32 vectorClock = 2;
 }
 
 service messageService {
     rpc MessageRoute(stream Message) returns (stream Message);
-    rpc VectorClockAddClient(empty) returns (vectorClock);
+    rpc AddClient(Empty) returns (AddClientResponse);
 }

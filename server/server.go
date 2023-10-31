@@ -70,12 +70,12 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 	}
 }
 
-func (s *MessageServiceServer) VectorClockAddClient(ctx context.Context, in *proto.Empty) (*proto.VectorClock, error) {
+func (s *MessageServiceServer) AddClient(ctx context.Context, in *proto.Empty) (*proto.AddClientResponse, error) {
 	vectorClock = append(vectorClock, 0)
 
 	updateLocalVectorClock()
 	var id = updateAndGetId()
-	return &proto.VectorClock{
+	return &proto.AddClientResponse{
 		Id:          id,
 		VectorClock: vectorClock,
 	}, nil
