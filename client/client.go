@@ -77,6 +77,7 @@ func listener(stream proto.MessageService_MessageRouteClient) {
 			log.Fatalf("Failed to receive a msg : %v", err)
 		}
 		updateVectorClock(in.VectorClock)
+		fmt.Printf("Got message %s, author: %s\n", in.Text, in.Author)
 		log.Printf("Got message %s, author: %s", in.Text, in.Author)
 	}
 }
@@ -105,5 +106,5 @@ func updateVectorClock(incommingClock []int32) {
 			vectorClock[i] = incommingClock[i]
 		}
 	}
-	log.Printf("Clint %d: Update vectorclock based on message from server VectorClock: %v", id, vectorClock)
+	log.Printf("Client %d: Update vectorclock based on message from server VectorClock: %v", id, vectorClock)
 }
