@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 )
@@ -15,14 +16,23 @@ var idCounter int32 = 0
 var vectorClock []int32
 
 func main() {
+	//make a log file
+	f, err := os.OpenFile("../logfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
 	//init vector clock with server position as 0
 	vectorClock = []int32{0}
 
 	//print the vector clock
-	log.Printf("VectorClock: %v", vectorClock)
+	log.Printf("Server: Starting VectorClock: %v", vectorClock)
 
 	clients = make(map[int32]proto.MessageService_MessageRouteServer)
-	println("Starting Serer")
+
 	grpcServer := grpc.NewServer()
 	proto.RegisterMessageServiceServer(grpcServer, &MessageServiceServer{})
 	listener, err := net.Listen("tcp", ":8080")
@@ -40,7 +50,6 @@ type MessageServiceServer struct {
 }
 
 func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageRouteServer) error {
-	log.Printf(("New client connected"))
 	connID := idCounter
 	clients[connID] = stream
 	defer delete(clients, connID)
@@ -55,7 +64,7 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 			return err
 		}
 		updateVectorClockFromClient(in.VectorClock, in.Id)
-		log.Printf("Got message %s, author: %s ", in.Text, in.Author)
+		log.Printf("Server: Got message %s, author: %s ", in.Text, in.Author)
 		for id, client := range clients {
 			//skips sending to the client that sent the message
 			if id == connID {
@@ -71,10 +80,14 @@ func (s *MessageServiceServer) MessageRoute(stream proto.MessageService_MessageR
 }
 
 func (s *MessageServiceServer) AddClient(ctx context.Context, in *proto.Empty) (*proto.AddClientResponse, error) {
-	vectorClock = append(vectorClock, 0)
-
+	vectorClock = append(vectorClock, 1)
+	//update because we are receiving a ask from a client
 	updateLocalVectorClock()
 	var id = updateAndGetId()
+	log.Printf("Server: Added client with id: %d", id)
+	//update because we are sending the vector clock to the client
+	updateLocalVectorClock()
+	log.Printf("Server: Sending vectorclock to client")
 	return &proto.AddClientResponse{
 		Id:          id,
 		VectorClock: vectorClock,
@@ -88,15 +101,14 @@ func updateAndGetId() int32 {
 }
 
 func updateVectorClockFromClient(clock []int32, id int32) {
-	//print the vector clock
-	log.Printf("Got VectorClock From client: %v", clock)
-	//print the id of the client that sent the vector clock
-
 	updateLocalVectorClock()
 	//because the server is the only one who speaks to clients
 	//we only need to update the space for the client in the vector clock
 	vectorClock[id] = clock[id]
+	//print the vector clock
+	log.Printf("Server: Updated vectorclock from client VectorClock: %v", vectorClock)
 }
 func updateLocalVectorClock() {
 	vectorClock[0]++
+	log.Printf("Server: Update local vectorclock VectorClock: %v", vectorClock)
 }
