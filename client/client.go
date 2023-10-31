@@ -78,7 +78,7 @@ func listener(stream proto.MessageService_MessageRouteClient) {
 		}
 		updateVectorClock(in.VectorClock)
 		fmt.Printf("Got message %s, author: %s\n", in.Text, in.Author)
-		log.Printf("Got message %s, author: %s", in.Text, in.Author)
+		log.Printf("Client %d: Got message %s, author: %s", id, in.Text, in.Author)
 	}
 }
 func initialAddClientCall(client proto.MessageServiceClient) {
@@ -94,7 +94,7 @@ func initialAddClientCall(client proto.MessageServiceClient) {
 }
 func updateLocalVectorClock() {
 	vectorClock[id]++
-	log.Printf("Clint %d: Update local vectorclock VectorClock: %v", id, vectorClock)
+	log.Printf("Client %d: Update local vectorclock VectorClock: %v", id, vectorClock)
 }
 func updateVectorClock(incommingClock []int32) {
 	vectorClock[id]++

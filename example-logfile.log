@@ -1,58 +1,55 @@
-2023/10/31 19:15:10 Server: Starting VectorClock: [0]
-2023/10/31 19:15:11 Connecting to server, State: CONNECTING
-2023/10/31 19:15:11 Server: Update local vectorclock VectorClock: [1 1]
-2023/10/31 19:15:11 Server: Added client with id: 1
-2023/10/31 19:15:11 Server: Update local vectorclock VectorClock: [2 1]
-2023/10/31 19:15:11 Server: Sending vectorclock to client
-2023/10/31 19:15:11 Clint 1: Update local vectorclock VectorClock: [2 2]
-2023/10/31 19:15:11 Client 1 connected
-2023/10/31 19:15:16 Client 1: Sending message
-2023/10/31 19:15:16 Clint 1: Update local vectorclock VectorClock: [2 3]
-2023/10/31 19:15:16 Server: Update local vectorclock VectorClock: [3 1]
-2023/10/31 19:15:16 Server: Updated vectorclock from client VectorClock: [3 3]
-2023/10/31 19:15:16 Server: Got message Hello?, author: Client 1 
-2023/10/31 19:15:21 Connecting to server, State: CONNECTING
-2023/10/31 19:15:21 Server: Update local vectorclock VectorClock: [4 3 1]
-2023/10/31 19:15:21 Server: Added client with id: 2
-2023/10/31 19:15:21 Server: Update local vectorclock VectorClock: [5 3 1]
-2023/10/31 19:15:21 Server: Sending vectorclock to client
-2023/10/31 19:15:21 Clint 2: Update local vectorclock VectorClock: [5 3 2]
-2023/10/31 19:15:21 Client 2 connected
-2023/10/31 19:15:22 Client 2: Sending message
-2023/10/31 19:15:22 Clint 2: Update local vectorclock VectorClock: [5 3 3]
-2023/10/31 19:15:22 Server: Update local vectorclock VectorClock: [6 3 1]
-2023/10/31 19:15:22 Server: Updated vectorclock from client VectorClock: [6 3 3]
-2023/10/31 19:15:22 Server: Got message Hello?, author: Client 2 
-2023/10/31 19:15:22 Server: Update local vectorclock VectorClock: [7 3 3]
-2023/10/31 19:15:22 Client 1: Update vectorclock based on message from server VectorClock: [7 4 3]
-2023/10/31 19:15:22 Got message Hello?, author: Client 2
-2023/10/31 19:15:29 Connecting to server, State: CONNECTING
-2023/10/31 19:15:29 Server: Update local vectorclock VectorClock: [8 3 3 1]
-2023/10/31 19:15:29 Server: Added client with id: 3
-2023/10/31 19:15:29 Server: Update local vectorclock VectorClock: [9 3 3 1]
-2023/10/31 19:15:29 Server: Sending vectorclock to client
-2023/10/31 19:15:29 Clint 3: Update local vectorclock VectorClock: [9 3 3 2]
-2023/10/31 19:15:29 Client 3 connected
-2023/10/31 19:15:32 Client 3: Sending message
-2023/10/31 19:15:32 Clint 3: Update local vectorclock VectorClock: [9 3 3 3]
-2023/10/31 19:15:32 Server: Update local vectorclock VectorClock: [10 3 3 1]
-2023/10/31 19:15:32 Server: Updated vectorclock from client VectorClock: [10 3 3 3]
-2023/10/31 19:15:32 Server: Got message Hello?, author: Client 3 
-2023/10/31 19:15:32 Server: Update local vectorclock VectorClock: [11 3 3 3]
-2023/10/31 19:15:32 Server: Update local vectorclock VectorClock: [12 3 3 3]
-2023/10/31 19:15:32 Client 2: Update vectorclock based on message from server VectorClock: [12 3 4 3]
-2023/10/31 19:15:32 Client 1: Update vectorclock based on message from server VectorClock: [11 5 3 3]
-2023/10/31 19:15:32 Got message Hello?, author: Client 3
-2023/10/31 19:15:32 Got message Hello?, author: Client 3
-2023/10/31 19:15:36 Client 1 leaves
-2023/10/31 19:15:36 Server: Update local vectorclock VectorClock: [13 3 3 3]
-2023/10/31 19:15:36 Server: Update local vectorclock VectorClock: [14 3 3 3]
-2023/10/31 19:15:36 Client 2: Update vectorclock based on message from server VectorClock: [13 3 5 3]
-2023/10/31 19:15:36 Client 3: Update vectorclock based on message from server VectorClock: [14 3 3 4]
-2023/10/31 19:15:36 Got message Client 1 leaves at vector clock [13 3 3 3], author: Server
-2023/10/31 19:15:36 Got message Client 1 leaves at vector clock [14 3 3 3], author: Server
-2023/10/31 19:15:40 Client 2 leaves
-2023/10/31 19:15:40 Server: Update local vectorclock VectorClock: [15 3 3 3]
-2023/10/31 19:15:40 Client 3: Update vectorclock based on message from server VectorClock: [15 3 3 5]
-2023/10/31 19:15:40 Got message Client 2 leaves at vector clock [15 3 3 3], author: Server
-2023/10/31 19:15:43 Client 3 leaves
+2023/10/31 19:23:19 Server: Starting VectorClock: [0]
+2023/10/31 19:23:20 Connecting to server, State: CONNECTING
+2023/10/31 19:23:20 Server: Update local vectorclock VectorClock: [1 1]
+2023/10/31 19:23:20 Server: Added client with id: 1
+2023/10/31 19:23:20 Server: Update local vectorclock VectorClock: [2 1]
+2023/10/31 19:23:20 Server: Sending vectorclock to client
+2023/10/31 19:23:20 Client 1: Update local vectorclock VectorClock: [2 2]
+2023/10/31 19:23:24 Client 1: Sending message
+2023/10/31 19:23:24 Client 1: Update local vectorclock VectorClock: [2 3]
+2023/10/31 19:23:24 Server: Update local vectorclock VectorClock: [3 1]
+2023/10/31 19:23:24 Server: Updated vectorclock from client VectorClock: [3 3]
+2023/10/31 19:23:24 Server: Got message Hello?, author: Client 1 
+2023/10/31 19:23:29 Connecting to server, State: CONNECTING
+2023/10/31 19:23:29 Server: Update local vectorclock VectorClock: [4 3 1]
+2023/10/31 19:23:29 Server: Added client with id: 2
+2023/10/31 19:23:29 Server: Update local vectorclock VectorClock: [5 3 1]
+2023/10/31 19:23:29 Server: Sending vectorclock to client
+2023/10/31 19:23:29 Client 2: Update local vectorclock VectorClock: [5 3 2]
+2023/10/31 19:23:30 Client 2: Sending message
+2023/10/31 19:23:30 Client 2: Update local vectorclock VectorClock: [5 3 3]
+2023/10/31 19:23:30 Server: Update local vectorclock VectorClock: [6 3 1]
+2023/10/31 19:23:30 Server: Updated vectorclock from client VectorClock: [6 3 3]
+2023/10/31 19:23:30 Server: Got message Hello?, author: Client 2 
+2023/10/31 19:23:30 Server: Update local vectorclock VectorClock: [7 3 3]
+2023/10/31 19:23:30 Client 1: Update vectorclock based on message from server VectorClock: [7 4 3]
+2023/10/31 19:23:30 Client 1: Got message Hello?, author: Client 2
+2023/10/31 19:23:34 Connecting to server, State: CONNECTING
+2023/10/31 19:23:34 Server: Update local vectorclock VectorClock: [8 3 3 1]
+2023/10/31 19:23:34 Server: Added client with id: 3
+2023/10/31 19:23:34 Server: Update local vectorclock VectorClock: [9 3 3 1]
+2023/10/31 19:23:34 Server: Sending vectorclock to client
+2023/10/31 19:23:34 Client 3: Update local vectorclock VectorClock: [9 3 3 2]
+2023/10/31 19:23:35 Client 3: Sending message
+2023/10/31 19:23:35 Client 3: Update local vectorclock VectorClock: [9 3 3 3]
+2023/10/31 19:23:35 Server: Update local vectorclock VectorClock: [10 3 3 1]
+2023/10/31 19:23:35 Server: Updated vectorclock from client VectorClock: [10 3 3 3]
+2023/10/31 19:23:35 Server: Got message Hello?, author: Client 3 
+2023/10/31 19:23:35 Server: Update local vectorclock VectorClock: [11 3 3 3]
+2023/10/31 19:23:35 Server: Update local vectorclock VectorClock: [12 3 3 3]
+2023/10/31 19:23:35 Client 1: Update vectorclock based on message from server VectorClock: [12 5 3 3]
+2023/10/31 19:23:35 Client 2: Update vectorclock based on message from server VectorClock: [11 3 4 3]
+2023/10/31 19:23:35 Client 1: Got message Hello?, author: Client 3
+2023/10/31 19:23:35 Client 2: Got message Hello?, author: Client 3
+2023/10/31 19:23:39 Client 1 leaves
+2023/10/31 19:23:39 Server: Update local vectorclock VectorClock: [13 3 3 3]
+2023/10/31 19:23:39 Server: Update local vectorclock VectorClock: [14 3 3 3]
+2023/10/31 19:23:39 Client 2: Update vectorclock based on message from server VectorClock: [13 3 5 3]
+2023/10/31 19:23:39 Client 2: Got message Client 1 leaves at vector clock [13 3 3 3], author: Server
+2023/10/31 19:23:39 Client 3: Update vectorclock based on message from server VectorClock: [14 3 3 4]
+2023/10/31 19:23:39 Client 3: Got message Client 1 leaves at vector clock [14 3 3 3], author: Server
+2023/10/31 19:23:41 Client 2 leaves
+2023/10/31 19:23:41 Server: Update local vectorclock VectorClock: [15 3 3 3]
+2023/10/31 19:23:41 Client 3: Update vectorclock based on message from server VectorClock: [15 3 3 5]
+2023/10/31 19:23:41 Client 3: Got message Client 2 leaves at vector clock [15 3 3 3], author: Server
+2023/10/31 19:23:43 Client 3 leaves
